@@ -22,4 +22,20 @@ router.get('/posts', (req, res) => {
     });
 });
 
+// Get one post
+router.get('/posts/:id', (req, res) => {
+  // Get posts from the mock api
+  axios.get(`${API}/posts/`, {
+  	params: {
+  		id: req.params.id
+  	}
+  })
+    .then(posts => {
+      res.status(200).json(posts.data);
+    })
+    .catch(error => {
+      res.status(500).send(error)
+    });
+});
+
 module.exports = router;

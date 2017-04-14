@@ -3,7 +3,7 @@
 	<p>Site Content: {{ site.body }}</p>	
 </div> -->
 	<router-outlet></router-outlet>
-<div *ngIf="showAll">
+<div *ngIf="sitesService.showAll">
 	<a 
 	[routerLink]="['/sites', site.id]"
 	(click)="doStuff()"

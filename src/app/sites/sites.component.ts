@@ -24,6 +24,6 @@ export class SitesComponent implements OnInit {
   }
 
   doStuff(id: number){
-  	this.showAll = !this.showAll;
+  	this.sitesService.showAll = !this.sitesService.showAll;
   }
 }
