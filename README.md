@@ -1,28 +1,81 @@
-# BoilerPlate
+* Ng new <myApp>
+* Cd into app
+* Npm install —save express body-parser (express organizes an architecture to run on a node server, body parser parses json)
+* Npm install —save axios (for http requests to salesforce’s jsforce api)
+* Npm install —save bootstrap (for easy styling)
+* Create server.js file in root folder, copy and paste this into it
+`
+// Get dependencies
+const express = require('express');
+const path = require('path');
+const http = require('http');
+const bodyParser = require('body-parser');
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+// Get our API routes
+const api = require('./server/routes/api');
 
-## Development server
+const app = express();
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+// Parsers for POST data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-## Code scaffolding
+// Point static path to dist
+app.use(express.static(path.join(__dirname, 'dist')));
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+// Set our api routes
+app.use('/api', api);
 
-## Build
+// Catch all other routes and return the index file
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+/**
+ * Get port from environment and store in Express.
+ */
+const port = process.env.PORT || '3000';
+app.set('port', port);
 
-## Running unit tests
+/**
+ * Create HTTP server.
+ */
+const server = http.createServer(app);
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+server.listen(port, () => console.log(`API running on localhost:${port}`));
+`
+* Create server folder
+* Create routes folder in server folder
+* Create a api.js file in routes folder
+`
+const express = require('express');
+const router = express.Router();
 
-## Running end-to-end tests
+// declare axios for making http requests
+const axios = require('axios');
+const API = 'https://jsonplaceholder.typicode.com';
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+/* GET api listing. */
+router.get('/', (req, res) => {
+  res.send('api works');
+});
 
-## Further help
+// Get all posts
+router.get('/posts', (req, res) => {
+  // Get posts from the mock api
+  axios.get(`${API}/posts`)
+    .then(posts => {
+      res.status(200).json(posts.data);
+    })
+    .catch(error => {
+      res.status(500).send(error)
+    });
+});
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+module.exports = router;
+`
+* Ng build
+* Node server.js
