@@ -1,0 +1,22 @@
+<!-- <div *ngFor="let site of sites">
+	<h1>Site Name: {{ site.title }}</h1>
+	<p>Site Content: {{ site.body }}</p>	
+</div> -->
+	<router-outlet></router-outlet>
+<div *ngIf="showAll">
+	<a 
+	[routerLink]="['/sites', site.id]"
+	(click)="doStuff()"
+	*ngFor="let site of sites"
+	style="text-decoration: none">
+		<div class="card">
+		  <div class="container">
+		    <h4><b>{{site.title}}</b></h4> 
+		    <p>{{ site.body }}</p> 
+		  </div>
+		</div>
+		<br>
+		<br>
+		<br>
+	</a>
+</div>
